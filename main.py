@@ -231,13 +231,3 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = Application(master=root)
     root.mainloop()
-
-
-"""
-if __name__ == "__main__":
-    window = tk.Tk()
-
-    window.size()
-    generate_from_playlist()
-    finished()
-"""
