@@ -25,7 +25,9 @@ def get_lyrics(artist, title):
         if char not in allowed_characters:
             char = ""
         new_artist += char
-
+    if "(feat." in title:
+        start = title.index("(feat.")
+        title = title[:start-1]
     for char in title.lower():
         if char not in allowed_characters:
             char = ""
