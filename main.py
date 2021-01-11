@@ -106,14 +106,16 @@ class Application(tk.Frame):
             else:
                 self.output(f"[X] {queue[0][0]}")
             self.delete_single(0)
+            self.update_queue()
 
     def output(self, text):
         self.output_listbox.insert(tk.END, text)
 
     def update_queue(self):
+        self.queue_listbox.delete(0, tk.END)
         for item in queue:
             self.queue_listbox.insert(tk.END, item[0])
-        self.queue_listbox.see("start")
+        self.queue_listbox.see("active")
 
     def edit_link(self):
         self.edit_window = tk.Toplevel(self.master)
@@ -135,7 +137,7 @@ class Application(tk.Frame):
             if del_index is None:
                 del_index = self.get_selection_index()
             self.queue_listbox.delete(del_index, del_index)
-            remove_subject = queue[del_index]
+            remove_subject = queue[del_index][0]
             queue.remove(queue[del_index])
             self.output(f"[-] {remove_subject}")
         except IndexError:
