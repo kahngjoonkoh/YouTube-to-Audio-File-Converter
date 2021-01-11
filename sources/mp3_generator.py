@@ -1,4 +1,4 @@
-from browser import *
+import browser
 from pytube import YouTube
 from moviepy.editor import *
 import os
@@ -30,10 +30,9 @@ def get_mp3(url, file_name, artist, title, album=None):
     track.tag.title = title
     track.tag.album = album
     track.tag.albumartist = artist
-    track.tag.lyrics.set(get_lyrics("Taylor Swift", "willow"))
+    track.tag.lyrics.set(browser.get_lyrics(artist, title))
+    print(track.tag.lyrics)
     track.tag.save()
 
     print(f"{url} conversion complete")
     shutil.move(mp3, r"output")
-
-get_lyrics("Taylor Swift", "willow")

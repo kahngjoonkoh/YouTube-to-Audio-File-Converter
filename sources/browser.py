@@ -23,17 +23,9 @@ def get_lyrics(artist, title):
     try:
         html = urllib.request.urlopen(url).read().decode('utf-8')
         soup = bs4.BeautifulSoup(html, 'html.parser')
-        print(soup)
-        key = "<!-- Usage of azlyrics.com content by any third-party lyrics provider is prohibited by our licensing " \
-              "agreement. Sorry about that. --> "
-        where_start = re.findall(key, text)
-        print(text)
-        print(where_start)
-        start = where_start[0] + 26
-        where_end = html.find('<!-- end of lyrics -->')
-        end = where_end - 2
-        lyrics = html[start:end].replace('<br />', '').decode("UTF8")
-        print(lyrics)
+        raw_lyrics = soup.find_all("div", class_=False, id=False)
+        lyrics = raw_lyrics[0].get_text()
+
         return lyrics
     except urllib.error.HTTPError:
         print("Can't find lyrics")
