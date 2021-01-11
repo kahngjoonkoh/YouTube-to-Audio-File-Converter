@@ -1,6 +1,8 @@
 from sources.mp3_generator import *
 from sources.browser import *
 import tkinter as tk
+import _thread
+# TODO: Multithreading
 
 queue = []
 

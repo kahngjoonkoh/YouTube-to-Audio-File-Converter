@@ -12,7 +12,7 @@ def get_yt_link(keywords):
     video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
     return f"https://www.youtube.com/watch?v={video_ids[0]}"
 
-
+# TODO:
 def get_yt_title(link):
     link = "Link"
     return link
