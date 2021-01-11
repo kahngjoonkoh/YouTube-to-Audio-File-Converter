@@ -78,34 +78,34 @@ class Application(tk.Frame):
             space = file_name.index(" - ", start + 1)
             file_name = file_name[:space]
             album = tempList[2]
-            try:
-                get_mp3(link, file_name, artist, title, album)
-            except:
-                self.output(f"Failed to download {file_name}")
+            if get_mp3(link, file_name, artist, title, album) is True:
+                return True
+            else:
+                return False
         else:
-            get_mp3(link, file_name, artist, title)
+            if get_mp3(link, file_name, artist, title) is True:
+                return True
+            else:
+                return False
 
     def convert_single(self):
         try:
             index = self.get_selection_index()
-            try:
-                self.convert(index)
-            except:
-                print(f"Failed {self.get_selection_item()} conversion")
+            if self.convert(index) is True:
+                self.output(f"[~] {queue[index][0]}")
+            else:
+                self.output(f"[X] {queue[index][0]}")
             self.delete_single(index)
         except IndexError:
-            print("Nothing selected")
+            self.output("[!] No selected subject")
 
     def convert_all(self):
-        try:
-            for i in range(len(queue)):
-                try:
-                    self.convert()
-                except:
-                    print(f"Failed {self.get_selection_item()} conversion")
-                self.delete_single(0)
-        except:
-            pass
+        for i in range(len(queue)):
+            if self.convert() is True:
+                self.output(f"[~] {queue[0][0]}")
+            else:
+                self.output(f"[X] {queue[0][0]}")
+            self.delete_single(0)
 
     def output(self, text):
         self.output_listbox.insert(tk.END, text)
@@ -135,16 +135,18 @@ class Application(tk.Frame):
             if del_index is None:
                 del_index = self.get_selection_index()
             self.queue_listbox.delete(del_index, del_index)
+            remove_subject = queue[del_index]
             queue.remove(queue[del_index])
-            self.output(f"{self.get_selection_item()} deleted from queue")
+            self.output(f"[-] {remove_subject}")
         except IndexError:
-            self.output("Nothing to delete")
+            self.output("[!] No selected subject")
 
     def delete_all(self):
         global queue
         queue = []
+        listbox_len = self.queue_listbox.size()
         self.queue_listbox.delete(0, tk.END)
-        self.output("Deleted all")
+        self.output(f"[-] {listbox_len} item(s)")
 
 
 class AddWindow(tk.Toplevel):
@@ -183,7 +185,7 @@ class AddWindow(tk.Toplevel):
                     else:
                         link = get_yt_link(item)
                         queue.append([item, link])
-            app.output(f"{len(temp)} item(s) has been added to the queue")
+            app.output(f"[+] {len(temp)} item(s)")
             app.update_queue()
 
         except:
@@ -223,7 +225,7 @@ class EditWindow(tk.Toplevel):
     def edit_link(self):
         new_link = self.edit_entry.get()
         queue[self.index][1] = new_link
-        app.output(f"Link for {app.get_selection_item()} has been changed")
+        app.output(f"[*] {app.get_selection_item()}")
         self.destroy()
 
 
