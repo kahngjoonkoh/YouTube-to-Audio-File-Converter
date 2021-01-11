@@ -12,7 +12,13 @@ def get_mp3(url, file_name, artist, title, album=None):
 
         print(f"Fetching YouTube video")
         mp4 = YouTube(url).streams.get_highest_resolution().download()
-        mp3 = f"{file_name}.mp3"
+        new_file_name = ""
+        for char in file_name:
+            if char in "`\/?<>*&^%$#@!()}{[]":
+                char = ""
+            new_file_name += ""
+
+        mp3 = f"{new_file_name}.mp3"
 
         print(f"Starting mp3 format conversion")
         video_clip = VideoFileClip(mp4)
