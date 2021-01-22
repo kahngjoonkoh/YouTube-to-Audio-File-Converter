@@ -22,7 +22,7 @@ def get_yt_title(link):
 
 def get_lyrics(artist, title):
     lang = detect(f"{artist} {title}")
-    if lang is ko:
+    if lang is "ko":
         get_lyrics_ko(artist, title)
     else:
         get_lyrics_eng(artist, title)
@@ -73,11 +73,13 @@ def get_lyrics_ko(artist, title):
 
     req2 = requests.get(lyric_url, headers=header)
     html2 = req.text.encode('utf-8')
-    soup = bs4.BeautifulSoup(html2, 'html.parser')
-    lyric_section = soup.find_all("div", class_="lyric")
-    lyrics = lyric_section[0]
+    soup2 = bs4.BeautifulSoup(html2, 'html.parser')
+    text = soup2.get_text
+    index = text.index("lyric")
+    #lyric_section = soup2.find_all("dd", class_="lyric")
+    #lyrics = lyric_section[0]
 
     #lyrics = raw_lyrics[0].get_text()
-    return lyrics
+    return index
 
-print(get_lyrics_ko("SEVENTEEN", "울고 싶지 않아"))
+# print(get_lyrics_ko("SEVENTEEN", "울고 싶지 않아"))
