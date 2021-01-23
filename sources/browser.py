@@ -23,9 +23,9 @@ def get_yt_title(link):
 def get_lyrics(artist, title):
     lang = detect(f"{artist} {title}")
     if lang is "ko":
-        get_lyrics_ko(artist, title)
+        return get_lyrics_ko(artist, title)
     else:
-        get_lyrics_eng(artist, title)
+        return get_lyrics_eng(artist, title)
 
 
 def get_lyrics_eng(artist, title):
@@ -52,7 +52,9 @@ def get_lyrics_eng(artist, title):
         raw_lyrics = soup.find_all("div", class_=False, id=False)
         lyrics = raw_lyrics[0].get_text()
         return lyrics
-    except:
+    except ValueError:
+        return False
+    except urllib.error.HTTPError:
         return False
 
 

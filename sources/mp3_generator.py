@@ -14,16 +14,16 @@ def get_mp3(url, file_name, artist, title, album=None):
         mp4 = YouTube(url).streams.get_highest_resolution().download()
         new_file_name = ""
         for char in file_name:
-            if char in "`\/?<>*&^%$#@!()}{[]":
+            if char in "`\/?<>*&^%#}{[]":
                 char = ""
-            new_file_name += ""
+            new_file_name += char
 
         mp3 = f"{new_file_name}.mp3"
 
         print(f"Starting mp3 format conversion")
         video_clip = VideoFileClip(mp4)
         audio_clip = video_clip.audio
-        audio_clip.write_audiofile(mp3)
+        audio_clip.write_audiofile(mp3, codec="libmp3lame")
 
         audio_clip.close()
         video_clip.close()
@@ -42,9 +42,9 @@ def get_mp3(url, file_name, artist, title, album=None):
         if lyrics is not False:
             track.tag.lyrics.set(lyrics)
             print("Lyrics set")
+            track.tag.save()
         elif lyrics is False:
             print("No lyrics data")
-        track.tag.save()
         print(f"{url} conversion complete")
         try:
             shutil.move(mp3, r"output")
@@ -54,5 +54,5 @@ def get_mp3(url, file_name, artist, title, album=None):
         else:
             print("moved into output file")
         return True
-    except:
+    except shutil.Error:
         return False
